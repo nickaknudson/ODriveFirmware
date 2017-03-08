@@ -67,7 +67,9 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
 void usb_cmd_thread(void const * argument);
-
+#ifdef TEST_USB_SPEED
+void usb_test_thread(void const * argument);
+#endif
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -129,6 +131,12 @@ void StartDefaultTask(void const * argument)
   osThreadDef(task_usb_cmd, usb_cmd_thread, osPriorityNormal, 0, 512);
   thread_usb_cmd = osThreadCreate(osThread(task_usb_cmd), NULL);
 
+#ifdef TEST_USB_SPEED
+  // USB TEST THREAD
+  osThreadDef(task_usb_test, usb_test_thread, osPriorityIdle, 0, 512);
+  thread_usb_test = osThreadCreate(osThread(task_usb_test), NULL);
+#endif
+
   //If we get to here, then the default task is done.
   vTaskDelete(defaultTaskHandle);
 
@@ -154,6 +162,21 @@ void usb_cmd_thread(void const * argument) {
   // If we get here, then this task is done
   vTaskDelete(osThreadGetId());
 }
+
+#ifdef TEST_USB_SPEED
+// Thread to test USB speed
+void usb_test_thread(void const * argument) {
+  for(;;) {
+    // Print as fast as possible
+    printf("testtesttesttesttesttesttesttesttesttest");
+    osSemaphoreRelease(sem_usb_irq);
+    osThreadYield();
+  }
+
+  // If we get here, then this task is done
+  vTaskDelete(osThreadGetId());
+}
+#endif
 
 /* USER CODE END Application */
 
