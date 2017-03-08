@@ -881,6 +881,9 @@ void motor_thread(void const * argument) {
     if (motor == &motors[1]) {
         FOC_voltage_loop(motor, 0.0f, 0.0f);
     }
+    if (motor == &motors[0]) {
+        FOC_voltage_loop(motor, 0.0f, 0.0f);
+    }
 
     float test_current = 10.0f;
     float R = measure_phase_resistance(motor, test_current, 1.0f);
