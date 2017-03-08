@@ -16,6 +16,7 @@ There is also [ODriveFPGA](https://github.com/madcowswe/ODriveFPGA), which conta
 - [Compiling and downloading firmware](#compiling-and-downloading-firmware)
 - [Generating startup code](#generating-startup-code)
 - [Setting up Eclipse development environment](#setting-up-eclipse-development-environment)
+- [Communicating with ODrive via USB](#communicating-with-odrive-via-usb)
 
 <!-- /MarkdownTOC -->
 
@@ -103,3 +104,13 @@ There is an excellent project called CubeMX2Makefile, originally from baoshi. Th
 * Eclipse should flash the board for you and the program should start halted on the first instruction in `Main`
 * Set beakpoints, step, hit Resume, etc.
 * Make some cool features! ;D
+
+## Communicating with ODrive via USB
+
+Copy udev rule
+
+    sudo cp ./tools/10-odrive.rules /etc/udev/rules.d/10-odrive.rules
+
+Restart udev
+
+    sudo /etc/init.d/udev restart 
